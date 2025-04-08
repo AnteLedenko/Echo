@@ -31,7 +31,7 @@ const Categories = () => {
             >
               {cat.icon && (
                 <img
-                  src={`http://127.0.0.1:8000${cat.icon}`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}${cat.icon}`}
                   alt={cat.name}
                   className="w-20 h-20 mx-auto mb-2 object-contain"
                 />

@@ -45,12 +45,12 @@ const Register = () => {
     });
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/users/register/", data, {
+      const res = await axios.post("users/register/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (res.status === 201) {
-        const loginRes = await axios.post("http://127.0.0.1:8000/api/users/login/", {
+        const loginRes = await axios.post("users/login/", {
           email: formData.email,
           password: formData.password1,
         });
@@ -58,7 +58,7 @@ const Register = () => {
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
 
-        const profileRes = await axios.get("http://127.0.0.1:8000/api/users/profile/", {
+        const profileRes = await axios.get("users/profile/", {
           headers: {
             Authorization: `Bearer ${loginRes.data.access}`,
           },

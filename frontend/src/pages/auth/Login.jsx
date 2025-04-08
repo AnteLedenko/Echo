@@ -24,12 +24,12 @@ const Login = () => {
     setSuccess("");
 
     try {
-      const { data } = await axios.post("http://127.0.0.1:8000/api/users/login/", formData);
+      const { data } = await axios.post("users/login/", formData);
 
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
 
-      const profileRes = await axios.get("http://127.0.0.1:8000/api/users/profile/", {
+      const profileRes = await axios.get("users/profile/", {
         headers: {
           Authorization: `Bearer ${data.access}`,
         },
