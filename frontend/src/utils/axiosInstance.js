@@ -2,7 +2,7 @@ import axios from "axios";
 
 const backendURL = import.meta.env.DEV
   ? "http://127.0.0.1:8000/api/" 
-  : import.meta.env.VITE_BACKEND_URL;
+  : import.meta.env.VITE_BACKEND_URL || "https://echo-backend-kyvl.onrender.com/api/";
 
 const axiosInstance = axios.create({
   baseURL: backendURL,
