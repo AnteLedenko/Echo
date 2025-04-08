@@ -15,6 +15,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 import dj_database_url
+import urllib.parse
+
 
 load_dotenv()
 
@@ -177,11 +179,16 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
+parsed_url = urllib.parse.urlparse(redis_url)
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.getenv("REDIS_URL", "redis://127.0.0.1:6379")],
+            "hosts": [(parsed_url.hostname, parsed_url.port)],
+            "password": parsed_url.password,
+            "ssl": parsed_url.scheme == "rediss",
         },
     },
 }
