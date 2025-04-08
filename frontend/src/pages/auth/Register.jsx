@@ -48,24 +48,19 @@ const Register = () => {
       const res = await axiosInstance.post("users/register/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
+    
       if (res.status === 201) {
         const loginRes = await axiosInstance.post("users/login/", {
           email: formData.email,
           password: formData.password1,
         });
-
+    
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
-
-        const profileRes = await axiosInstance.get("users/profile/", {
-          headers: {
-            Authorization: `Bearer ${loginRes.data.access}`,
-          },
-        });
-
+    
+        const profileRes = await axiosInstance.get("users/profile/");
         localStorage.setItem("user_id", profileRes.data.id);
-
+    
         setSuccess("Registration successful! Redirecting...");
         setTimeout(() => navigate("/auth/profile"), 1500);
       }
