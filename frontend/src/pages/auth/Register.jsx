@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
 
@@ -45,12 +45,12 @@ const Register = () => {
     });
 
     try {
-      const res = await axios.post("users/register/", data, {
+      const res = await axiosInstance.post("users/register/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (res.status === 201) {
-        const loginRes = await axios.post("users/login/", {
+        const loginRes = await axiosInstance.post("users/login/", {
           email: formData.email,
           password: formData.password1,
         });
@@ -58,7 +58,7 @@ const Register = () => {
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
 
-        const profileRes = await axios.get("users/profile/", {
+        const profileRes = await axiosInstance.get("users/profile/", {
           headers: {
             Authorization: `Bearer ${loginRes.data.access}`,
           },

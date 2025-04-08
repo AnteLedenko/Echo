@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import Layout from "../../components/Layout";
 
 const Login = () => {
@@ -24,17 +24,12 @@ const Login = () => {
     setSuccess("");
 
     try {
-      const { data } = await axios.post("users/login/", formData);
+      const { data } = await axiosInstance.post("users/login/", formData);
 
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
 
-      const profileRes = await axios.get("users/profile/", {
-        headers: {
-          Authorization: `Bearer ${data.access}`,
-        },
-      });
-
+      const profileRes = await axiosInstance.get("users/profile/");
       localStorage.setItem("user_id", profileRes.data.id);
 
       setSuccess("Login successful!");

@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await axios.post("http://127.0.0.1:8000/api/users/token/refresh/", {
+        const res = await axios.post("users/token/refresh/", {
           refresh: localStorage.getItem("refresh"),
         });
 
