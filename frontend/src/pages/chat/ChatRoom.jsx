@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import WS_BASE from "../../utils/wsBase";
 import Layout from "../../components/Layout";
 
 const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
-const WS_BASE = "ws://localhost:8000/ws/chat";
 
 const ChatRoom = () => {
   const { chatId } = useParams();
