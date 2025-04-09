@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class Category(models.Model):
     CATEGORY_CHOICES = [
@@ -13,7 +14,7 @@ class Category(models.Model):
 
     name = models.CharField(max_length=100, choices=CATEGORY_CHOICES, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    icon = models.ImageField(upload_to="category_icons/", null=True, blank=True)
+    icon = models.ImageField(upload_to="category-icons/", storage=MediaCloudinaryStorage(),max_length=1000, null=True, blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
