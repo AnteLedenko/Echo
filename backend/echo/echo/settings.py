@@ -35,6 +35,8 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
+redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
@@ -194,9 +196,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(parsed_url.hostname, parsed_url.port)],
-            "password": parsed_url.password,
-            "ssl": parsed_url.scheme == "rediss",
+            "hosts": [redis_url],
         },
     },
 }
