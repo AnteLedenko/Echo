@@ -1,5 +1,6 @@
 from django.db import migrations
 import os
+from django.contrib.auth.hashers import make_password
 
 def create_superuser(apps, schema_editor):
     User = apps.get_model('users', 'User')
@@ -9,11 +10,14 @@ def create_superuser(apps, schema_editor):
     last_name = os.getenv('DJANGO_SUPERUSER_LASTNAME')
 
     if not User.objects.filter(email=email).exists():
-        User.objects.create_superuser(
+        User.objects.create(
             email=email,
-            password=password,
+            password=make_password(password),
             first_name=first_name,
-            last_name=last_name
+            last_name=last_name,
+            is_staff=True,
+            is_superuser=True,
+            is_active=True,
         )
 
 class Migration(migrations.Migration):
