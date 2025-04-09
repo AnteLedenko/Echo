@@ -31,7 +31,7 @@ const Categories = () => {
             >
               {cat.icon && (
                 <img
-                  src={cat.icon}
+                  src={`${import.meta.env.VITE_CLOUDINARY_BASE_URL}/image/upload/${cat.icon}.png`}
                   alt={cat.name}
                   className="w-20 h-20 mx-auto mb-2 object-contain"
                 />
@@ -44,7 +44,8 @@ const Categories = () => {
         </div>
       )}
     </Layout>
-  );  
+  );
+  
 };
 
 export default Categories;
