@@ -19,30 +19,27 @@ const Categories = () => {
         Browse Categories
       </h2>
 
-      {categories.length === 0 ? (
-        <p className="text-center text-gray-500">No categories found.</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-          {categories.map((cat) => (
+      {categories.map((cat) => {
+        console.log(" Icon in map loop:", cat.icon);
+        return (
             <Link
-              key={cat.id}
-              to={`/categories/${cat.slug}`}
-              className="bg-white p-4 rounded shadow hover:shadow-md text-center cursor-pointer transition"
+            key={cat.id}
+            to={`/categories/${cat.slug}`}
+            className="bg-white p-4 rounded shadow hover:shadow-md text-center cursor-pointer transition"
             >
-              {cat.icon && (
+            {cat.icon && (
                 <img
                 src={`${import.meta.env.VITE_CLOUDINARY_BASE_URL}/image/upload/v1/${cat.icon}`}
                 alt={cat.name}
                 className="w-20 h-20 mx-auto mb-2 object-contain"
-              />
-              )}
-              <p className="text-sm text-purple-700 font-medium">
+                />
+            )}
+            <p className="text-sm text-purple-700 font-medium">
                 {cat.name_display}
-              </p>
+            </p>
             </Link>
-          ))}
-        </div>
-      )}
+        );
+        })}
     </Layout>
   );
 };
