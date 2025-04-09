@@ -20,6 +20,7 @@ const ChatRoom = () => {
     const fetchData = async () => {
       try {
         const res = await axiosInstance.get(`chat/${chatId}/`);
+        console.log(" Sending request with token:", localStorage.getItem("access"));
         console.log("messages fetched:", res.data.messages);
         setMessages(res.data.messages);
         setChatData(res.data.chat);
@@ -27,7 +28,11 @@ const ChatRoom = () => {
         await axiosInstance.post(`chat/${chatId}/seen/`);
         window.dispatchEvent(new CustomEvent("messages-seen"));
       } catch (err) {
-        console.error("error loading chat:", err);
+        if (err.response?.status === 401) {
+            alert("Session expired. Please log in again.");
+            localStorage.clear();
+            window.location.href = "/auth/login";
+          }
       }
     };
     fetchData();
@@ -39,7 +44,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     if (!token) return;
-
+    console.log(" Opening WebSocket with token:", token);
     const ws = new WebSocket(`${WS_BASE}/${chatId}/?token=${token}`);
 
     ws.onopen = () => {

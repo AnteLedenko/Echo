@@ -60,13 +60,14 @@ const Register = () => {
       
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
-      
+         
         console.log(" Register - access token:", loginRes.data.access);
         console.log(" Register - refresh token:", loginRes.data.refresh);
       
         const profileRes = await axiosInstance.get("users/profile/");
         localStorage.setItem("user_id", profileRes.data.id);
-      
+        localStorage.setItem("user_id", profileRes.data.id);
+
         setSuccess("Registration successful! Redirecting...");
         setTimeout(() => navigate("/auth/profile"), 1500);
       }

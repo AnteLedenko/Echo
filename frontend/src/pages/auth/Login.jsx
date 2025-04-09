@@ -31,13 +31,14 @@ const Login = () => {
     
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
-    
+         
         console.log(" Login - access token:", data.access);
         console.log(" Login - refresh token:", data.refresh);
     
         const profileRes = await axiosInstance.get("users/profile/");
         localStorage.setItem("user_id", profileRes.data.id);
-    
+        localStorage.setItem("user_id", profileRes.data.id);
+
         setSuccess("Login successful!");
         setTimeout(() => navigate("/auth/profile"), 800);
       } catch (err) {
