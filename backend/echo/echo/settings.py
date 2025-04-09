@@ -183,6 +183,10 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
 parsed_url = urllib.parse.urlparse(redis_url)
 
