@@ -9,8 +9,12 @@ User = get_user_model()
 
 class JWTAuthMiddleware(BaseMiddleware):
     async def __call__(self, scope, receive, send):
+        print("JWTAuthMiddleware called")
+        print("Raw query string:", scope.get("query_string", b""))
         query_string = scope.get("query_string", b"").decode()
+        print("Decoded query string:", query_string)
         token_param = parse_qs(query_string).get("token")
+        print("Parsed token param:", token_param)
 
         if token_param:
             print("token param:", token_param)
