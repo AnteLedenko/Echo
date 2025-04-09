@@ -23,25 +23,32 @@ const Login = () => {
     setError("");
     setSuccess("");
 
-    try {
-      const { data } = await axiosInstance.post("users/login/", formData);
-
-      localStorage.setItem("access", data.access);
-      localStorage.setItem("refresh", data.refresh);
-
-      const profileRes = await axiosInstance.get("users/profile/");
-      localStorage.setItem("user_id", profileRes.data.id);
-
-      setSuccess("Login successful!");
-      setTimeout(() => navigate("/auth/profile"), 800);
-    } catch (err) {
-      const msg =
-        err.response?.data?.detail ||
-        err.response?.data?.non_field_errors?.[0] ||
-        "Login failed. Check your email and password.";
-      setError(msg);
-    }
-  };
+      try {
+        const { data } = await axiosInstance.post("users/login/", formData);
+    
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+    
+        localStorage.setItem("access", data.access);
+        localStorage.setItem("refresh", data.refresh);
+    
+        console.log(" Login - access token:", data.access);
+        console.log(" Login - refresh token:", data.refresh);
+    
+        const profileRes = await axiosInstance.get("users/profile/");
+        localStorage.setItem("user_id", profileRes.data.id);
+    
+        setSuccess("Login successful!");
+        setTimeout(() => navigate("/auth/profile"), 800);
+      } catch (err) {
+        const msg =
+          err.response?.data?.detail ||
+          err.response?.data?.non_field_errors?.[0] ||
+          "Login failed. Check your email and password.";
+        setError(msg);
+      }
+    };
+  
 
   return (
     <Layout>

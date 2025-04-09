@@ -54,16 +54,23 @@ const Register = () => {
           email: formData.email,
           password: formData.password1,
         });
-    
+      
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+      
         localStorage.setItem("access", loginRes.data.access);
         localStorage.setItem("refresh", loginRes.data.refresh);
-    
+      
+        console.log(" Register - access token:", loginRes.data.access);
+        console.log(" Register - refresh token:", loginRes.data.refresh);
+      
         const profileRes = await axiosInstance.get("users/profile/");
         localStorage.setItem("user_id", profileRes.data.id);
-    
+      
         setSuccess("Registration successful! Redirecting...");
         setTimeout(() => navigate("/auth/profile"), 1500);
       }
+      
     } catch (err) {
       console.error("Registration failed:", err.response || err);
       const message =

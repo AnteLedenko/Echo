@@ -31,10 +31,10 @@ const Categories = () => {
             >
               {cat.icon && (
                 <img
-                  src={`${cat.icon}`}
-                  alt={cat.name}
-                  className="w-20 h-20 mx-auto mb-2 object-contain"
-                />
+                src={`${import.meta.env.VITE_CLOUDINARY_BASE_URL}/image/upload/${cat.icon}.png`}
+                alt={cat.name}
+                className="w-20 h-20 mx-auto mb-2 object-contain"
+              />
               )}
               <p className="text-sm text-purple-700 font-medium">
                 {cat.name_display}
