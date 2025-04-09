@@ -31,7 +31,7 @@ const Categories = () => {
             >
               {cat.icon && (
                 <img
-                  src={`/icons/${cat.icon}`}
+                  src={`${cat.icon}`}
                   alt={cat.name}
                   className="w-20 h-20 mx-auto mb-2 object-contain"
                 />
