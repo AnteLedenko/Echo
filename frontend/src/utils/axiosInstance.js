@@ -9,6 +9,7 @@ axiosInstance.interceptors.request.use(
     const token = localStorage.getItem("access");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log(" Axios attached token:", token);
     }
     return config;
   },
@@ -28,9 +29,11 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await axios.post("users/token/refresh/", {
-          refresh: localStorage.getItem("refresh"),
-        });
+        const res = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/users/token/refresh/`,
+            { refresh: localStorage.getItem("refresh") },
+            { headers: { "Content-Type": "application/json" } }
+        );          
 
         const newAccess = res.data.access;
         localStorage.setItem("access", newAccess);

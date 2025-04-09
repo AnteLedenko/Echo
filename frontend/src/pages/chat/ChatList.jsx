@@ -14,6 +14,7 @@ const ChatList = () => {
     const fetchChats = async () => {
       try {
         const res = await axiosInstance.get("chat/");
+        console.log(" access from storage:", localStorage.getItem("access"));
         setChats(res.data);
       } catch (err) {
         console.error("Failed to load chats:", err);
