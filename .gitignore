@@ -24,3 +24,5 @@ echoenv/
 
 node_modules/
 dist/
+
+staticfiles/
