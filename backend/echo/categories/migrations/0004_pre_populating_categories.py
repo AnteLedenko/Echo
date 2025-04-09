@@ -1,4 +1,5 @@
 from django.db import migrations
+from django.utils.text import slugify
 
 def create_categories(apps, schema_editor):
     Category = apps.get_model('categories', 'Category')
@@ -12,10 +13,15 @@ def create_categories(apps, schema_editor):
     ]
 
     for cat in categories:
-        Category.objects.update_or_create(name=cat["name"], defaults={
-            "icon": cat["icon"],
-            "order": cat["order"]
-        })
+        slug = slugify(cat["name"])
+        Category.objects.update_or_create(
+            slug=slug,
+            defaults={
+                "name": cat["name"],
+                "icon": cat["icon"],
+                "order": cat["order"],
+            }
+        )
 
 class Migration(migrations.Migration):
 
