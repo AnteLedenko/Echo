@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from listings.models import Listing
@@ -6,6 +7,7 @@ from listings.serializers import ListingSerializer
 from .models import Category
 from .serializers import CategorySerializer
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import NotFound
 
 
 class CategoryListView(APIView):
@@ -14,11 +16,11 @@ class CategoryListView(APIView):
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class ListingsByCategoryView(ListAPIView):
+    serializer_class = ListingSerializer
 
-class ListingsByCategoryView(APIView):
-    def get(self, request, slug):
+    def get_queryset(self):
+        slug = self.kwargs.get("slug")
         category = get_object_or_404(Category, slug=slug)
-        listings = Listing.objects.filter(category=category)
-        serializer = ListingSerializer(listings, many=True, context={"request": request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Listing.objects.filter(category=category, is_sold=False).order_by("-created_at")
 

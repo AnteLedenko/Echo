@@ -1,10 +1,10 @@
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
-
 from .models import Listing, ListingImage
 from categories.models import Category
 from .serializers import ListingSerializer
@@ -84,21 +84,19 @@ class ListingDetailView(APIView):
         serializer = ListingSerializer(listing, context={"request": request})
         return Response(serializer.data)
 
-class MyListingsView(APIView):
+class MyListingsView(ListAPIView):
+    serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        listings = Listing.objects.filter(user=request.user)
-        serializer = ListingSerializer(listings, many=True, context={"request": request})
-        return Response(serializer.data)
+    def get_queryset(self):
+        return Listing.objects.filter(user=self.request.user).order_by("-created_at")
 
-class SavedListingsView(APIView):
+class SavedListingsView(ListAPIView):
+    serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        listings = request.user.saved_listings.all()
-        serializer = ListingSerializer(listings, many=True, context={"request": request})
-        return Response(serializer.data)
+    def get_queryset(self):
+        return self.request.user.saved_listings.all().order_by("-created_at")
 
 class ToggleSaveListingView(APIView):
     permission_classes = [IsAuthenticated]
