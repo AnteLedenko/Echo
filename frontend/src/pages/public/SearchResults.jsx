@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Layout from "../../components/Layout";
+import Pagination from "../../components/Pagination";
 
 const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
 const SearchResults = () => {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("query");
@@ -17,8 +20,9 @@ const SearchResults = () => {
       if (!query) return;
 
       try {
-        const res = await axiosInstance.get(`/search/?query=${encodeURIComponent(query)}`);
-        setResults(res.data);
+        const res = await axiosInstance.get("/search/", {params: { query, page: currentPage },});
+        setResults(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 12));
       } catch (err) {
         console.error("Search failed:", err);
         setError("Something went wrong while searching.");
@@ -26,7 +30,11 @@ const SearchResults = () => {
     };
 
     fetchResults();
-  }, [query]);
+  }, [query, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Layout>
@@ -67,6 +75,11 @@ const SearchResults = () => {
           ))}
         </div>
       )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Layout>
   );
 };

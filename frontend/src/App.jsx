@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
+import Footer from "./components/Footer";
 
 import PublicRoutes from './routes/PublicRoutes';
 import AuthRoutes from './routes/AuthRoutes';
@@ -17,6 +18,7 @@ function App() {
         <Route path="/listings/*" element={<ListingsRoutes />} />
         <Route path="/chat/*" element={<ChatRoutes />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

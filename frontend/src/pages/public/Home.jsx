@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
+import Pagination from "../../components/Pagination";
 import axiosInstance from "../../utils/axiosInstance";
 
 const Home = () => {
   const [listings, setListings] = useState([]);
   const [toggleStatus, setToggleStatus] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
   const isLoggedIn = !!localStorage.getItem("access");
 
   useEffect(() => {
-    axiosInstance
-      .get("/")
+    axiosInstance.get("/", { params: { page: currentPage } })
       .then((res) => {
-        setListings(res.data);
+        setListings(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 12)); 
         const initialStatus = {};
-        res.data.forEach((listing) => {
+        res.data.results.forEach((listing) => {
           initialStatus[listing.id] = listing.is_saved;
         });
         setToggleStatus(initialStatus);
       })
       .catch((err) => console.error("Failed to fetch listings", err));
-  }, []);
+  }, [currentPage]);
 
   const handleToggleSave = async (id) => {
     try {
@@ -34,6 +37,10 @@ const Home = () => {
       console.error("Toggle save failed:", err);
     }
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };  
 
   return (
     <Layout>
@@ -86,8 +93,13 @@ const Home = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>    
       )}
+      <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
     </Layout>
   );
 };

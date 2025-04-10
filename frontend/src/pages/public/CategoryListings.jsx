@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Layout from "../../components/Layout";
+import Pagination from "../../components/Pagination";
 
 const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
@@ -10,15 +11,19 @@ const CategoryListings = () => {
   const [listings, setListings] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
 
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await axiosInstance.get(`categories/${slug}/`);
-        setListings(res.data);
+        const res = await axiosInstance.get(`categories/${slug}/`, {params: { page: currentPage },});
+        setListings(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 12)); 
 
-        if (res.data.length > 0) {
-          setCategoryName(`${res.data[0].category_name_display}`);
+        if (res.data.results.length > 0) {
+          setCategoryName(`${res.data.results[0].category_name_display}`);
         } else {
           setCategoryName(slug.replace(/_/g, " "));
         }
@@ -29,7 +34,11 @@ const CategoryListings = () => {
     };
 
     fetchListings();
-  }, [slug]);
+  }, [slug, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };  
 
   return (
     <Layout>
@@ -71,6 +80,11 @@ const CategoryListings = () => {
           ))}
         </div>
       )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Layout>
   );
 };

@@ -50,6 +50,10 @@ const Navigation = () => {
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
+  const handleLinkClick = () => {
+    setDropdownOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -114,15 +118,16 @@ const Navigation = () => {
           ref={dropdownRef}
           className="bg-purple-700 text-white px-4 py-3 space-y-2 shadow-lg"
         >
-          <Link to="/" className="block hover:bg-purple-800 px-3 py-2 rounded">Home</Link>
-          <Link to="/categories" className="block hover:bg-purple-800 px-3 py-2 rounded">Categories</Link>
+          <Link to="/" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Home</Link>
+          <Link to="/about" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">About</Link>
+          <Link to="/categories" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Categories</Link>
 
           {isAuthenticated ? (
             <>
-              <Link to="/auth/profile" className="block hover:bg-purple-800 px-3 py-2 rounded">Profile</Link>
+              <Link to="/auth/profile" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Profile</Link>
 
               <div className="relative">
-              <Link to="/chat" className="flex items-center gap-2 hover:bg-purple-800 px-3 py-2 rounded">
+              <Link to="/chat" onClick={handleLinkClick} className="flex items-center gap-2 hover:bg-purple-800 px-3 py-2 rounded">
                 <span>Chat</span>
                 {unreadTotal > 0 && (
                   <span className="bg-red-500 text-white text-xs px-2 py-[2px] rounded-full">
@@ -132,12 +137,12 @@ const Navigation = () => {
               </Link>
               </div>
 
-              <Link to="/auth/logout" className="block hover:bg-purple-800 px-3 py-2 rounded">Logout</Link>
+              <Link to="/auth/logout" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Logout</Link>
             </>
           ) : (
             <>
-              <Link to="/auth/login" className="block hover:bg-purple-800 px-3 py-2 rounded">Login</Link>
-              <Link to="/auth/register" className="block hover:bg-purple-800 px-3 py-2 rounded">Register</Link>
+              <Link to="/auth/login" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Login</Link>
+              <Link to="/auth/register" onClick={handleLinkClick} className="block hover:bg-purple-800 px-3 py-2 rounded">Register</Link>
             </>
           )}
 
@@ -150,7 +155,7 @@ const Navigation = () => {
               className="w-60 px-3 py-2 rounded text-black"
             />
             <button
-              type="submit"
+              type="submit" onClick={handleLinkClick}
               className="w-30 ml-2 bg-white text-purple-700 py-2 rounded hover:bg-gray-100 transition"
             >
               Search
