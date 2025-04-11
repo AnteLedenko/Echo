@@ -19,8 +19,8 @@ const AuthRoutes = () => {
       <Route path="profile" element={<Profile />} />
       <Route path="profile/update" element={<UpdateProfile />} />
       <Route path="profile/:userId" element={<PublicProfile />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="reset-password/:uid/:token" element={<ResetPassword />} />
     </Routes>
   );
 };

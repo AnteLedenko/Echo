@@ -10,10 +10,10 @@ import SearchResults from '../pages/public/SearchResults';
 const PublicRoutes = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    <Route path="/about" element={<About />} />
-    <Route path="/categories" element={<Categories />} />
-    <Route path="/categories/:slug" element={<CategoryListings />} />
-    <Route path="/search" element={<SearchResults />} />
+    <Route path="about" element={<About />} />
+    <Route path="categories" element={<Categories />} />
+    <Route path="categories/:slug" element={<CategoryListings />} />
+    <Route path="search" element={<SearchResults />} />
   </Routes>
 );
 

@@ -15,8 +15,8 @@ const ListingsRoutes = () => {
       <Route path=":id" element={<ListingDetail />} />
       <Route path=":id/update" element={<UpdateListing />} />
       <Route path=":id/delete" element={<DeleteListing />} />
-      <Route path="/my" element={<MyListings />} />
-      <Route path="/saved" element={<SavedListings />} />
+      <Route path="my" element={<MyListings />} />
+      <Route path="saved" element={<SavedListings />} />
     </Routes>
   );
 };
