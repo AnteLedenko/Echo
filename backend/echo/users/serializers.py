@@ -50,7 +50,8 @@ class PasswordResetRequestSerializer(serializers.Serializer):
         token = PasswordResetTokenGenerator().make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        reset_url = f"{settings.FRONTEND_BASE_URL}/reset-password/{uid}/{token}"
+        reset_url = f"{settings.FRONTEND_BASE_URL}/auth/reset-password/{uid}/{token}"
+
         send_mail(
             subject="Reset your Echo password",
             message=f"Click the link to reset your password: {reset_url}",
