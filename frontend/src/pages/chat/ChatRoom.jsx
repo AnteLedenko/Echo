@@ -15,7 +15,6 @@ const ChatRoom = () => {
   const bottomRef = useRef(null);
   const currentUserId = parseInt(localStorage.getItem("user_id"));
   const token = localStorage.getItem("access");
-  const [listing, setListing] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +24,6 @@ const ChatRoom = () => {
         console.log("messages fetched:", res.data.messages);
         setMessages(res.data.messages);
         setChatData(res.data.chat);
-        setListing(res.data.chat.listing);
 
         await axiosInstance.post(`chat/${chatId}/seen/`);
         window.dispatchEvent(new CustomEvent("messages-seen"));
@@ -120,11 +118,6 @@ const ChatRoom = () => {
               >
                 {receiver.first_name} {receiver.last_name}
               </Link>
-              {listing && (
-                <p className="text-sm text-gray-600">
-                  Listing: <span className="italic">{listing.title}</span>
-                </p>
-              )}
             </>
           )}
         </div>
