@@ -1,3 +1,5 @@
+# Custom migration to populate category choices on deployment in a specific order
+
 from django.db import migrations
 from django.utils.text import slugify
 

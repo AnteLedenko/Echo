@@ -1,3 +1,5 @@
+# Here we have views for creating, updating, deleting, retrieving, and saving listings
+
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
@@ -9,6 +11,8 @@ from .models import Listing, ListingImage
 from categories.models import Category
 from .serializers import ListingSerializer
 
+
+# Here we create a new listing with image uploads and address geocoding
 class ListingCreateView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -36,6 +40,8 @@ class ListingCreateView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# Here we update an existing listing, allowing image changes and geocoding
 class ListingUpdateView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -68,6 +74,8 @@ class ListingUpdateView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# Here we delete a listing belonging to the authenticated user
 class ListingDeleteView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -76,6 +84,8 @@ class ListingDeleteView(APIView):
         listing.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+# Here is view for retrieve details for a single listing
 class ListingDetailView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -84,6 +94,8 @@ class ListingDetailView(APIView):
         serializer = ListingSerializer(listing, context={"request": request})
         return Response(serializer.data)
 
+
+# View for listing all listings created by the authenticated user
 class MyListingsView(ListAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
@@ -91,6 +103,8 @@ class MyListingsView(ListAPIView):
     def get_queryset(self):
         return Listing.objects.filter(user=self.request.user).order_by("-created_at")
 
+
+# View for listing all saved listings for the authenticated user
 class SavedListingsView(ListAPIView):
     serializer_class = ListingSerializer
     permission_classes = [IsAuthenticated]
@@ -98,6 +112,8 @@ class SavedListingsView(ListAPIView):
     def get_queryset(self):
         return self.request.user.saved_listings.all().order_by("-created_at")
 
+
+# Toggle the saved status of a listing for the authenticated user
 class ToggleSaveListingView(APIView):
     permission_classes = [IsAuthenticated]
 

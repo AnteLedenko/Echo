@@ -1,7 +1,13 @@
+# Admin configuration for the Chat app.
+# This registers Chat and Message models with custom display options
+# to easily manage chats and messages via Django admin.
+
+
 from django.contrib import admin
 
 from django.contrib import admin
 from .models import Chat, Message
+
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
@@ -12,6 +18,7 @@ class ChatAdmin(admin.ModelAdmin):
     def get_participants(self, obj):
         return ", ".join([str(user.email) for user in obj.participants.all()])
     get_participants.short_description = "Participants"
+
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):

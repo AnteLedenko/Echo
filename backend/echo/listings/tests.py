@@ -1,3 +1,5 @@
+# Tests for creating, reading, updating, and deleting listings using JWT authenticated requests.
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model
@@ -5,6 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from listings.models import Listing, Category
 
 User = get_user_model()
+
 
 class ListingTests(APITestCase):
     def setUp(self):

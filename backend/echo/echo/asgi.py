@@ -7,6 +7,11 @@ For more information on this file, see
 https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 """
 
+# ASGI config for Echo project.
+# Handles both HTTP and WebSocket connections.
+# WebSocket connections are routed through JWTAuthMiddleware
+# for authentication and then passed to the chat app's URLRouter.
+
 import os
 import django
 

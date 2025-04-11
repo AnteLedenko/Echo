@@ -1,3 +1,6 @@
+# WebSocket routing for chat and notification consumers.
+# Each path is matched to its corresponding ASGI consumer class.
+
 from django.urls import re_path
 from .consumers import ChatConsumer, NotificationConsumer
 

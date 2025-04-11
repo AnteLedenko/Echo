@@ -1,3 +1,5 @@
+# Models for listings and their associated images with geocoding support via Google Maps API
+
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -6,6 +8,8 @@ from cloudinary.models import CloudinaryField
 import cloudinary.models
 import googlemaps
 
+
+# Main model for listing 
 class Listing(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name="listings")
     category = models.ForeignKey(Category,on_delete=models.CASCADE,related_name="listings")
@@ -23,6 +27,7 @@ class Listing(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     saved_by = models.ManyToManyField(settings.AUTH_USER_MODEL,related_name="saved_listings",blank=True)
 
+    # Uses Google Maps API to get geolocation data from address fields
     def geocode_address(self):
         gmaps = googlemaps.Client(key=settings.GOOGLE_MAPS_API_KEY)
         
@@ -38,6 +43,8 @@ class Listing(models.Model):
         except Exception as e:
             print(f"Geocoding failed: {str(e)}")
 
+
+# Model for storing Cloudinary hosted images related to listings
 class ListingImage(models.Model):
     listing = models.ForeignKey(Listing,on_delete=models.CASCADE,related_name="images")
     image = cloudinary.models.CloudinaryField(

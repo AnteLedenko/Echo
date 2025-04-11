@@ -1,3 +1,6 @@
+# Tests for chat functionality sending messages, retrieving chat lists and messages,
+# and marking messages as seen. Uses authenticated JWT sessions for secure requests.
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model

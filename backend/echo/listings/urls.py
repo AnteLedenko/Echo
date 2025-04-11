@@ -1,3 +1,5 @@
+# Urls for creating listing, managing, viewing, and saving 
+
 from django.urls import path
 from .views import (
     ListingCreateView,

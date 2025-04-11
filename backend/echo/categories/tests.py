@@ -1,3 +1,5 @@
+# Tests for the categories app here were verifying category listings API and response structure
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from listings.models import Category

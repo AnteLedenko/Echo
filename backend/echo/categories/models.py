@@ -1,3 +1,6 @@
+# Category model with predefined category choices, icon upload support, and custom ordering.
+# Automatically generates slug from the name on save.
+
 from django.db import models
 from django.utils.text import slugify
 from cloudinary_storage.storage import MediaCloudinaryStorage

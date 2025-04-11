@@ -1,3 +1,5 @@
+# urls for chat functionality listing chats, sending and receiving messages, and marking messages as read
+
 from django.urls import path
 from .views import ChatListView, ChatMessagesView, SendMessageView, MessageSeenView
 

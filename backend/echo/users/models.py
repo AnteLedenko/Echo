@@ -3,8 +3,9 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from cloudinary.models import CloudinaryField
 
 
+# Here we have a custom user manager to override the default behavior of creating users and superusers
 class CustomUserManager(BaseUserManager):
-
+    # Here we have a method for creating a regular user
     def create_user(self, email, first_name, last_name, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field must be set")
@@ -16,6 +17,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    # Method for creating a superuser
     def create_superuser(self, email, first_name, last_name, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -23,6 +25,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, first_name, last_name, password, **extra_fields)
 
 
+# Custom user model using email instead of username as the unique identifier
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = None

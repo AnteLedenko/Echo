@@ -1,8 +1,12 @@
+# Here we have tests for user registration, login/logout, and profile update functionality.
+# Since were using rest api were using APITestCase
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class RegistrationTests(APITestCase):
     def test_register_user_successfully(self):
@@ -32,6 +36,7 @@ class RegistrationTests(APITestCase):
         response = self.client.post("/api/users/register/", data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("email", str(response.data).lower())
+
 
 class LoginLogoutTests(APITestCase):
     def setUp(self):

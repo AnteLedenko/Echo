@@ -1,11 +1,15 @@
 from rest_framework import serializers
 from .models import Listing, ListingImage
 
+
+# Serializer for individual listing images
 class ListingImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingImage
         fields = ['id', 'image']
 
+
+# Serializer for full listing data with user info, ownership and saved status
 class ListingSerializer(serializers.ModelSerializer):
     images = ListingImageSerializer(many=True, read_only=True)
     is_saved = serializers.SerializerMethodField(read_only=True)
@@ -28,6 +32,8 @@ class ListingSerializer(serializers.ModelSerializer):
             request = self.context.get('request')
             return request.user == obj.user if request and request.user.is_authenticated else False
 
+
+# Serializer for referencing listings by ID and title
 class ListingTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing

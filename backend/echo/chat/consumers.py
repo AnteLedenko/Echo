@@ -7,41 +7,40 @@ from .models import Chat, Message
 
 User = get_user_model()
 
+
+# Consumer for handling WebSocket connections for chat messaging
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         try:
-            print("webSocket connect called")
-            print("scope query:", self.scope.get("query_string", b""))
             self.chat_id = self.scope['url_route']['kwargs']['chat_id']
             self.sender = self.scope["user"]
-            print("sender in connect():", self.sender)
-
+            
+            # Only allow authenticated users to connect
             if not self.sender.is_authenticated:
-                print("unauthenticated user — closing")
                 await self.close()
                 return
 
+            # Check if chat exists
             chat = await self.get_chat_by_id(self.chat_id)
             if not chat:
-                print("chat not found, closing")
                 await self.close()
                 return
 
             self.chat = chat
             self.room_name = f"chat_{self.chat.id}"
-            print("connected to room:", self.room_name)
 
+            # Join WebSocket group specific to the chat room
             await self.channel_layer.group_add(
                 self.room_name,
                 self.channel_name
             )
             await self.accept()
+
         except Exception as e:
-            print("error in connect():", e)
             await self.close()
 
     async def disconnect(self, close_code):
-        print("disconnected:", close_code)
+        # Leave the chat room group on disconnect
         try:
             if hasattr(self, "room_name"):
                 await self.channel_layer.group_discard(
@@ -49,16 +48,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     self.channel_name
                 )
         except Exception as e:
-            print("error in disconnect():", e)
+            await self.close()
 
     async def receive(self, text_data):
         try:
-            print("received:", text_data)
+            # Handle incoming message from WebSocket
             data = json.loads(text_data)
             message_text = data.get("message")
 
             if message_text:
                 message = await self.save_message(message_text)
+
+                # Broadcast message to all group participants
 
                 await self.channel_layer.group_send(
                     self.room_name,
@@ -71,10 +72,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
         except Exception as e:
-            print("error in receive():", e)
+            await self.close()
 
     async def chat_message(self, event):
-        print("sending message:", event)
+        # Send message data back to client
         await self.send(text_data=json.dumps({
             "message": event["message"],
             "sender_id": event["sender_id"],
@@ -85,6 +86,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @staticmethod
     @sync_to_async
     def get_chat_by_id(chat_id):
+        # Retrieve chat by ID, or return None if it doesn't exist
         try:
             return Chat.objects.get(id=chat_id)
         except Chat.DoesNotExist:
@@ -92,17 +94,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, message_text):
+        # Save new message to database
         return Message.objects.create(
             chat=self.chat,
             sender=self.sender,
             content=message_text
         )
 
+
+# Consumer for handling real-time notifications 
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope["user"]
         if user.is_authenticated:
             self.group_name = f"notifications_{user.id}"
+
+            # Join notifications group for current user
             await self.channel_layer.group_add(self.group_name, self.channel_name)
             await self.accept()
         else:
@@ -113,4 +120,5 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
     async def notify_new_message(self, event):
+         # Send notifications to client
         await self.send(text_data=json.dumps(event["data"]))

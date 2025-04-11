@@ -1,3 +1,5 @@
+# urls for the homepage and about page 
+
 from django.urls import path
 from .views import HomeView, AboutView
 

@@ -3,6 +3,8 @@ from listings.models import Listing
 from listings.serializers import ListingSerializer
 from rest_framework.exceptions import ValidationError
 
+
+# View for searching listings by title or description 
 class SearchListingsView(ListAPIView):
     serializer_class = ListingSerializer
 

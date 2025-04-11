@@ -1,3 +1,5 @@
+# Admin configuration for managing listings and listing images in the Django admin panel
+
 from django.contrib import admin
 from .models import Listing, ListingImage
 

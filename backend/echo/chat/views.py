@@ -1,3 +1,6 @@
+# Views for handling chat functionality, including listing user chats,
+# sending messages, retrieving message history, and marking messages as read
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +12,8 @@ from django.db.models import Prefetch
 
 User = get_user_model()
 
+
+# This view returns a list of all chats the authenticated user is part of
 class ChatListView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -22,6 +27,8 @@ class ChatListView(APIView):
         serializer = ChatSerializer(chats, many=True, context={"request": request})
         return Response(serializer.data)
 
+
+# Returns chat details and message history for a specific chat
 class ChatMessagesView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -39,6 +46,8 @@ class ChatMessagesView(APIView):
             "messages": messages_serializer.data
         })
 
+
+# This view allows an authenticated user to send a message to another user
 class SendMessageView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -80,6 +89,8 @@ class SendMessageView(APIView):
             "message": MessageSerializer(message).data
         }, status=status.HTTP_201_CREATED)
 
+
+# Marks all previously unread messages in the chat as reed by authenticated user
 class MessageSeenView(APIView):
     permission_classes = [IsAuthenticated]
 

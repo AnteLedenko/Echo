@@ -1,3 +1,5 @@
+# Again using APITestCase for tests for listing search functionality based on title or description
+
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model

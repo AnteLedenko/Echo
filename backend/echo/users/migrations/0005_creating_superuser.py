@@ -1,3 +1,5 @@
+# Custom migration to create a superuser using environment variables during deployment
+
 from django.db import migrations
 import os
 from django.contrib.auth.hashers import make_password

@@ -12,6 +12,8 @@ from .serializers import (
     PasswordResetConfirmSerializer,
 )
 
+
+# This class handles user registration
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -22,6 +24,8 @@ class RegisterView(APIView):
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# This one returns authenticated users profile
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -30,6 +34,7 @@ class ProfileView(APIView):
         return Response(serializer.data)
 
 
+# This class allows authenticated user to update their profile
 class ProfileUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -40,6 +45,8 @@ class ProfileUpdateView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# This class allows public view of anothers user profile 
 class PublicProfileView(APIView):
     permission_classes = [AllowAny]  
 
@@ -48,6 +55,8 @@ class PublicProfileView(APIView):
         serializer = ProfileSerializer(user)
         return Response(serializer.data)
 
+
+# This class logs out authenticated user 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -55,6 +64,8 @@ class LogoutView(APIView):
         logout(request)
         return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
+
+# This class sends password reset email to user if email is valid
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
 
@@ -65,6 +76,8 @@ class PasswordResetRequestView(APIView):
             return Response({"message": "Password reset email sent."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# This one resets users password using uid and token from email
 class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
 

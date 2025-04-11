@@ -1,3 +1,5 @@
+# Routes for the categories app list all categories and get listings by category slug
+
 from django.urls import path
 from .views import CategoryListView, ListingsByCategoryView
 

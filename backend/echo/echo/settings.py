@@ -15,7 +15,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 import dj_database_url
-import urllib.parse
 
 
 load_dotenv()
@@ -37,9 +36,9 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:5173")
 
-redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
-
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
 
 # Application definition
 
@@ -78,6 +77,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'echo.urls'
 
+# Templates config including frontend path
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -94,6 +94,7 @@ TEMPLATES = [
     },
 ]
 
+# WSGI & ASGI apps
 WSGI_APPLICATION = 'echo.wsgi.application'
 
 ASGI_APPLICATION = "echo.asgi.application" 
@@ -102,6 +103,7 @@ ASGI_APPLICATION = "echo.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Database config using dj_database_url
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
@@ -158,8 +160,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Custom user model
 AUTH_USER_MODEL = 'users.User'
 
+# Cloudinary media storage
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
@@ -170,10 +174,13 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# Google Maps API
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
+# CORS config 
 CORS_ALLOW_ALL_ORIGINS = True
 
+# DRF config with JWT auth and pagination
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -182,6 +189,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 12,
 }
 
+# JWT settings
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -194,9 +202,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-redis_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379")
-parsed_url = urllib.parse.urlparse(redis_url)
 
+
+# Channels (WebSocket) config using Redis
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -206,6 +214,7 @@ CHANNEL_LAYERS = {
     },
 }
 
+# PW reset Email config 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

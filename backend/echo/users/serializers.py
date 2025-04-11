@@ -1,3 +1,5 @@
+# Here we hve serializers for handling user registration, profile data, and password reset logic
+
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -7,12 +9,16 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import User
 
+
+# Used to retrieve and update authenticated user profile data
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "email", "first_name", "last_name", "profile_picture", "date_joined")
         read_only_fields = ("id", "email", "date_joined")
 
+
+# Handles user registration with password confirmation and validation
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
@@ -36,6 +42,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             profile_picture=validated_data.get("profile_picture")
         )
 
+
+# Sends password reset email with token and UID link
 class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
@@ -59,6 +67,8 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             recipient_list=[email],
         )
 
+
+# Handles validation and processing of password reset via uid and token
 class PasswordResetConfirmSerializer(serializers.Serializer):
     uid = serializers.CharField()
     token = serializers.CharField()
