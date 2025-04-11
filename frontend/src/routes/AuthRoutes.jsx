@@ -6,8 +6,8 @@ import Logout from '../pages/auth/Logout';
 import Profile from '../pages/auth/Profile';
 import UpdateProfile from '../pages/auth/UpdateProfile';
 import PublicProfile from "../pages/auth/PublicProfile";
-import ForgotPassword from "./pages/auth/ForgotPassword";
-import ResetPassword from "./pages/auth/ResetPassword";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 
 const AuthRoutes = () => {
