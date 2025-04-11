@@ -59,7 +59,6 @@ const SavedListings = () => {
 
                 <h3 className="text-lg font-semibold text-purple-700">{listing.title}</h3>
                 <p className="text-purple-700 font-bold">€{listing.price}</p>
-                <p className="text-sm text-gray-500">{listing.city}</p>
 
                 <Link
                   to={`/listings/${listing.id}`}

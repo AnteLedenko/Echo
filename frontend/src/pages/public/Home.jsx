@@ -68,7 +68,6 @@ const Home = () => {
 
               <h3 className="text-lg text-purple-700 font-semibold">{listing.title}</h3>
               <p className="text-purple-700 font-bold">€{listing.price}</p>
-              <p className="text-sm text-gray-500">{listing.city}</p>
 
               <div className="flex flex-wrap gap-2 mt-3">
                 <Link

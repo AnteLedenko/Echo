@@ -6,6 +6,7 @@ import axiosInstance from "../../utils/axiosInstance";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    email: "",
     first_name: "",
     last_name: "",
     profile_picture: null,
@@ -22,7 +23,7 @@ const ProfileUpdate = () => {
         const res = await axiosInstance.get("users/profile/");
         const { first_name, last_name, profile_picture } = res.data;
 
-        setFormData({ first_name, last_name, profile_picture: null });
+        setFormData({ email, first_name, last_name, profile_picture: null });
 
         if (profile_picture) {
           setImagePreview(`${CLOUDINARY_BASE}/${profile_picture}`);
@@ -83,6 +84,7 @@ const ProfileUpdate = () => {
         {success && <div className="text-green-500 text-sm mb-3">{success}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="w-full px-4 py-2 border rounded"/>
           <input name="first_name" placeholder="First Name" value={formData.first_name} onChange={handleChange} required className="w-full px-4 py-2 border rounded"/>
           <input name="last_name" placeholder="Last Name" value={formData.last_name} onChange={handleChange} required className="w-full px-4 py-2 border rounded"/>
           <div>

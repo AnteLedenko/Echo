@@ -73,6 +73,13 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className="flex justify-between text-sm text-purple-700 mt-4">
+          <p>
+            Don't have an account?{" "}
+            <Link to="/auth/register" className="underline hover:text-purple-900">Register</Link>
+          </p>
+          <Link to="/forgot-password" className="underline hover:text-purple-900">Forgot password?</Link>
+        </div>
       </div>
     </Layout>
   );

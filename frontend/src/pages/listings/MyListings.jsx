@@ -60,28 +60,27 @@ const MyListings = () => {
                 <h3 className="text-lg font-semibold text-purple-700">
                   {listing.title}
                 </h3>
-                <p className="text-sm text-gray-500 mb-2">{listing.city}</p>
                 <p className="font-bold text-purple-600">€{listing.price}</p>
 
                 <div className="flex flex-wrap gap-2 mt-3">
-                  <Link
-                    to={`/listings/${listing.id}/update`}
-                    className="text-white bg-purple-500 px-3 py-1 rounded hover:bg-purple-600 text-sm"
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    to={`/listings/${listing.id}/delete`}
-                    className="text-white bg-red-500 px-3 py-1 rounded hover:bg-red-600 text-sm"
-                  >
-                    Delete
-                  </Link>
-                  <Link
-                    to={`/listings/${listing.id}`}
-                    className="text-white bg-purple-500 px-3 py-1 rounded hover:bg-purple-600 text-sm"
-                  >
-                    View
-                  </Link>
+                    <Link
+                        to={`/listings/${listing.id}`}
+                        className="text-white bg-purple-500 px-3 py-1 rounded hover:bg-purple-600 text-sm"
+                    >
+                        View
+                    </Link>
+                    <Link
+                        to={`/listings/${listing.id}/update`}
+                        className="text-white bg-purple-500 px-3 py-1 rounded hover:bg-purple-600 text-sm"
+                    >
+                        Edit
+                    </Link>
+                    <Link
+                        to={`/listings/${listing.id}/delete`}
+                        className="text-white bg-purple-500 px-3 py-1 rounded hover:bg-purple-600 text-sm"
+                    >
+                        Delete
+                    </Link>
                 </div>
               </div>
             ))}
