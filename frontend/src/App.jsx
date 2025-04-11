@@ -18,7 +18,6 @@ function App() {
         <Route path="/listings/*" element={<ListingsRoutes />} />
         <Route path="/chat/*" element={<ChatRoutes />} />
       </Routes>
-      <Footer />
     </Router>
   );
 }

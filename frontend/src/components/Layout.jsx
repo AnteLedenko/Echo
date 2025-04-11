@@ -1,5 +1,7 @@
 // src/components/Layout.jsx
 import React from "react";
+import Footer from "./Footer";
+
 
 const Layout = ({ children }) => {
   return (
@@ -7,6 +9,7 @@ const Layout = ({ children }) => {
       <main className="flex-grow flex justify-center items-start w-full">
         <div className="w-full max-w-4xl">{children}</div>
       </main>
+      <Footer />
     </div>
   );
 };
