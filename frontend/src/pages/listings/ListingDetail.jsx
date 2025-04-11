@@ -96,9 +96,13 @@ const ListingDetail = () => {
           <p><strong>Address:</strong> {listing.address}, {listing.county} {listing.postal_code}</p>
           <p><strong>Description:</strong> {listing.description}</p>
           <p className="text-sm text-gray-500">
-            Listed by <span className="font-medium text-gray-700">
+            Listed by{" "}
+            <Link
+              to={`/auth/profile/${listing.user_id}`}
+              className="font-medium text-gray-700 hover:underline"
+            >
               {listing.user_first_name} {listing.user_last_name}
-            </span>
+            </Link>
           </p>
         </div>
 
@@ -132,27 +136,18 @@ const ListingDetail = () => {
           <div className="flex gap-4 mt-6">
             <Link
               to={`/listings/${listing.id}/update`}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
             >
               Edit
             </Link>
             <Link
               to={`/listings/${listing.id}/delete`}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
             >
               Delete
             </Link>
           </div>
         )}
-
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="text-sm text-purple-600 underline hover:text-purple-800"
-          >
-            ← Back to Listings
-          </Link>
-        </div>
       </div>
     </Layout>
   );

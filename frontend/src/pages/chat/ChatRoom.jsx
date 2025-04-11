@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import WS_BASE from "../../utils/wsBase";
 import Layout from "../../components/Layout";
@@ -112,9 +112,17 @@ const ChatRoom = () => {
                 alt="avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
-              <p className="font-semibold text-purple-700">
+              <Link
+                to={`/auth/profile/${receiver.id}`}
+                className="font-semibold text-purple-700 hover:underline"
+              >
                 {receiver.first_name} {receiver.last_name}
-              </p>
+              </Link>
+              {listing && (
+                <p className="text-sm text-gray-600">
+                  Listing: <span className="italic">{listing.title}</span>
+                </p>
+              )}
             </>
           )}
         </div>

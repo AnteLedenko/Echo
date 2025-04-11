@@ -28,6 +28,16 @@ const SavedListings = () => {
     fetchSaved();
   }, [currentPage]);
 
+  const handleRemove = async (id) => {
+    try {
+      await axiosInstance.post(`listings/${id}/toggle-save/`);
+      
+      setSavedListings((prev) => prev.filter((listing) => listing.id !== id));
+    } catch (err) {
+      console.error("Failed to remove listing from saved", err);
+    }
+  };
+
   const handlePageChange = (page) => setCurrentPage(page);
 
   return (
@@ -60,12 +70,20 @@ const SavedListings = () => {
                 <h3 className="text-lg font-semibold text-purple-700">{listing.title}</h3>
                 <p className="text-purple-700 font-bold">€{listing.price}</p>
 
-                <Link
-                  to={`/listings/${listing.id}`}
-                  className="inline-block mt-3 text-sm text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-700 transition"
-                >
-                  View Listing
-                </Link>
+                <div className="flex flex-wrap gap-2 mt-3">
+                    <Link
+                        to={`/listings/${listing.id}`}
+                        className="text-sm text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-700 transition"
+                    >
+                        View Listing
+                    </Link>
+                    <button
+                        onClick={() => handleRemove(listing.id)}
+                        className="text-sm text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
+                    >
+                        Remove
+                    </button>
+                </div>
               </div>
             ))}
           </div>
