@@ -29,7 +29,7 @@ const PublicProfile = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-start min-h-screen">
+      <div className="flex flex-col items-center justify-start min-h-screen pt-24 px-4 space-y-8">
         <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-md flex flex-col items-center border">
           {user.profile_picture ? (
             <img
