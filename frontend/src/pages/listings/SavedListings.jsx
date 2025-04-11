@@ -79,7 +79,7 @@ const SavedListings = () => {
                     </Link>
                     <button
                         onClick={() => handleRemove(listing.id)}
-                        className="text-sm text-white bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
+                        className="text-sm text-white bg-purple-600 px-4 py-2 rounded hover:bg-purple-700 transition"
                     >
                         Remove
                     </button>
