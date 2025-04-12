@@ -51,6 +51,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+### Some Functionalities of the App
+
+
 ### Navigation
 ![Navigation](./screenshots/navigation.PNG)
 Users can navigate the app using the fixed top navigation bar with a dropdown menu. It adapts for both mobile and desktop.
