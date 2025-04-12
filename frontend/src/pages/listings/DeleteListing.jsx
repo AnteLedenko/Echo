@@ -68,7 +68,7 @@ const DeleteListing = () => {
   return (
     <Layout>
       <div className="max-w-md mx-auto bg-white shadow-md p-6 mt-10 rounded">
-        <h2 className="text-xl font-bold text-red-600 mb-4 text-center">Delete Listing</h2>
+        <h2 className="text-xl font-bold text-purple-600 mb-4 text-center">Delete Listing</h2>
         <p className="text-gray-700 text-center mb-6">
           Are you sure you want to delete this listing? This action cannot be undone.
         </p>
