@@ -1,4 +1,4 @@
-// src/components/Layout.jsx
+// Layout wraps all pages to provide consistent spacing and structure
 import React from "react";
 
 

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
 
+  // Fetch categories on component mount
   useEffect(() => {
     axiosInstance
       .get("categories/")
@@ -19,6 +20,7 @@ const Categories = () => {
         Browse Categories
       </h2>
   
+      {/* No categories fallback */}
       {categories.length === 0 ? (
         <p className="text-center text-gray-500">No categories found.</p>
       ) : (

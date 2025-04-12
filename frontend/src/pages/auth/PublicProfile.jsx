@@ -3,30 +3,32 @@ import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import axiosInstance from "../../utils/axiosInstance";
 
-const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
 const PublicProfile = () => {
-  const { userId } = useParams();
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axiosInstance.get(`users/profile/${userId}/`);
-        setUser(res.data);
-      } catch (err) {
-        console.error("Failed to load user profile:", err);
-        setError("Could not load user profile.");
-      }
-    };
+    const { userId } = useParams();
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState("");
+    const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
+    // Fetch user by ID
+    useEffect(() => {
+        const fetchUser = async () => {
+        try {
+            const res = await axiosInstance.get(`users/profile/${userId}/`);
+            setUser(res.data);
+        } catch (err) {
+            setError("Could not load user profile.");
+        }
+        };
 
     fetchUser();
   }, [userId]);
 
+  // Error state
   if (error) return <Layout><p className="text-center text-red-500 mt-10">{error}</p></Layout>;
+  // Loading state
   if (!user) return <Layout><p className="text-center mt-10">Loading user profile...</p></Layout>;
 
+  // Public profile UI
   return (
     <Layout>
       <div className="flex flex-col items-center justify-start min-h-screen pt-24 px-4 space-y-8">

@@ -7,7 +7,7 @@ import Pagination from "../../components/Pagination";
 const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
 const CategoryListings = () => {
-  const { slug } = useParams();
+  const { slug } = useParams(); // Get category slug from URL
   const [listings, setListings] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState("");
@@ -16,26 +16,28 @@ const CategoryListings = () => {
   const [toggleStatus, setToggleStatus] = useState({});
   const isLoggedIn = !!localStorage.getItem("access");
 
-
+  // Fetch listings by category when slug or page changes
   useEffect(() => {
     const fetchListings = async () => {
       try {
         const res = await axiosInstance.get(`categories/${slug}/`, {params: { page: currentPage },});
         setListings(res.data.results);
         setTotalPages(Math.ceil(res.data.count / 12));
+
+        // Initialize toggle save status map
         const initialStatus = {};
         res.data.results.forEach((listing) => {
         initialStatus[listing.id] = listing.is_saved;
         });
         setToggleStatus(initialStatus);
 
+        // Set display name for category
         if (res.data.results.length > 0) {
           setCategoryName(`${res.data.results[0].category_name_display}`);
         } else {
           setCategoryName(slug.replace(/_/g, " "));
         }
       } catch (err) {
-        console.error("Failed to load category listings:", err);
         setError("Could not fetch listings for this category.");
       }
     };
@@ -43,6 +45,7 @@ const CategoryListings = () => {
     fetchListings();
   }, [slug, currentPage]);
 
+  // Toggle save/unsave listing
   const handleToggleSave = async (id) => {
     try {
       await axiosInstance.post(`listings/${id}/toggle-save/`);
@@ -55,6 +58,7 @@ const CategoryListings = () => {
     }
   };
 
+  // Update page number
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };  
@@ -88,6 +92,7 @@ const CategoryListings = () => {
                 <h3 className="text-lg font-semibold text-purple-700">{listing.title}</h3>
                 <p className="font-bold text-purple-600">€{listing.price}</p>
 
+                {/* Actions: View + Save */}
                 <div className="flex flex-wrap gap-2 mt-3">
                     <Link
                         to={`/listings/${listing.id}`}

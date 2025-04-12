@@ -12,11 +12,14 @@ const Home = () => {
   const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
   const isLoggedIn = !!localStorage.getItem("access");
 
+  // Fetch listings on initial load and when page changes
   useEffect(() => {
     axiosInstance.get("/", { params: { page: currentPage } })
       .then((res) => {
         setListings(res.data.results);
         setTotalPages(Math.ceil(res.data.count / 12)); 
+
+        // Initialize saved status for each listing
         const initialStatus = {};
         res.data.results.forEach((listing) => {
           initialStatus[listing.id] = listing.is_saved;
@@ -26,6 +29,7 @@ const Home = () => {
       .catch((err) => console.error("Failed to fetch listings", err));
   }, [currentPage]);
 
+  // Toggle save/unsave status for a listing
   const handleToggleSave = async (id) => {
     try {
       await axiosInstance.post(`listings/${id}/toggle-save/`);
@@ -38,6 +42,7 @@ const Home = () => {
     }
   };
 
+  // Handle pagination
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };  
@@ -48,6 +53,7 @@ const Home = () => {
         Latest Listings
       </h2>
 
+      {/* No listings state */}
       {listings.length === 0 ? (
         <p className="text-center text-gray-600">No listings available yet.</p>
       ) : (
@@ -69,6 +75,7 @@ const Home = () => {
               <h3 className="text-lg text-purple-700 font-semibold">{listing.title}</h3>
               <p className="text-purple-700 font-bold">€{listing.price}</p>
 
+              {/* Action buttons */}
               <div className="flex flex-wrap gap-2 mt-3">
                 <Link
                   to={`/listings/${listing.id}`}

@@ -9,6 +9,7 @@ const UpdateListing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Form data and states
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -29,11 +30,13 @@ const UpdateListing = () => {
   const [isOwner, setIsOwner] = useState(true);
   const [loading, setLoading] = useState(true);
 
+  // Fetch listing details and categories
   useEffect(() => {
     const fetchData = async () => {
       try {
         const listingRes = await axiosInstance.get(`listings/${id}/`);
 
+        // Block if user is not the owner
         if (!listingRes.data.is_owner) {
           setIsOwner(false);
           setError("You are not authorized to edit this listing.");
@@ -42,6 +45,7 @@ const UpdateListing = () => {
 
         const categoryRes = await axiosInstance.get("categories/");
 
+        // Pre-fill form with fetched data
         setFormData({
           title: listingRes.data.title,
           description: listingRes.data.description,
@@ -57,7 +61,6 @@ const UpdateListing = () => {
         setExistingImages(listingRes.data.images);
         setCategories(categoryRes.data);
       } catch (err) {
-        console.error("Error loading listing:", err);
         setError("Could not load listing. Are you logged in?");
       } finally {
         setLoading(false);
@@ -67,12 +70,14 @@ const UpdateListing = () => {
     fetchData();
   }, [id]);
 
+  // Handle form input changes text and files
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
       const filesArray = Array.from(files);
       const total = newImages.length + existingImages.length - deleteImages.length + filesArray.length;
 
+      // Limit total images to 10
       if (total > 10) {
         alert("You can only upload up to 10 images.");
         return;
@@ -84,16 +89,19 @@ const UpdateListing = () => {
     }
   };
 
+  // Remove added image before submitting
   const handleRemoveNewImage = (index) => {
     const updated = [...newImages];
     updated.splice(index, 1);
     setNewImages(updated);
   };
 
+  // Mark existing image for deletion
   const handleRemoveExistingImage = (id) => {
     setDeleteImages((prev) => [...prev, id]);
   };
 
+  // Submit the updated listing
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -117,11 +125,11 @@ const UpdateListing = () => {
         navigate(`/listings/${id}`);
       }
     } catch (err) {
-      console.error("Update error:", err);
       setError("Something went wrong while updating.");
     }
   };
 
+  // Redirects for unauthorized or unauthenticated users
   if (!localStorage.getItem("access")) {
     return (
       <Layout>
@@ -156,11 +164,13 @@ const UpdateListing = () => {
         <h2 className="text-2xl font-bold text-purple-700 mb-4">Update Listing</h2>
         {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
+        {/* Listing Update Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required className="w-full p-2 border rounded"/>
           <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" required className="w-full p-2 border rounded"/>
           <input name="price" type="number" value={formData.price} onChange={handleChange} placeholder="Price" required className="w-full p-2 border rounded"/>
-
+             
+          {/* Category Dropdown */}
           <select name="category" value={formData.category} onChange={handleChange} required className="w-full p-2 border rounded">
             <option value="">Select a Category</option>
             {categories.map((cat) => (
@@ -168,16 +178,19 @@ const UpdateListing = () => {
             ))}
           </select>
 
+          {/* Address Info */}     
           <input name="address" value={formData.address} onChange={handleChange} placeholder="Address" required className="w-full p-2 border rounded"/>
           <input name="city" value={formData.city} onChange={handleChange} placeholder="City" required className="w-full p-2 border rounded"/>
           <input name="county" value={formData.county} onChange={handleChange} placeholder="County" required className="w-full p-2 border rounded"/>
           <input name="postal_code" value={formData.postal_code} onChange={handleChange} placeholder="Postal Code" required className="w-full p-2 border rounded"/>
 
+          {/* Sold checkbox */}
           <input type="checkbox" name="is_sold" checked={formData.is_sold} onChange={(e) => setFormData(prev => ({ ...prev, is_sold: e.target.checked }))} className="mr-2"/>
           <label htmlFor="is_sold">Mark as sold</label>
 
           <input type="file" name="images" multiple onChange={handleChange} className="w-full" />
 
+          {/* Existing images */}
           {existingImages.length > 0 && (
             <div>
               <h4 className="font-semibold text-sm text-gray-600 mb-2">Current Images:</h4>
@@ -204,6 +217,7 @@ const UpdateListing = () => {
             </div>
           )}
 
+          {/* Preview newly added images */}  
           {newImages.length > 0 && (
             <div>
               <h4 className="font-semibold text-sm text-gray-600 mb-2">New Images:</h4>
@@ -228,6 +242,7 @@ const UpdateListing = () => {
             </div>
           )}
 
+          {/* Submit button */}    
           <button type="submit" className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition">
             Save Changes
           </button>

@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Layout from "../../components/Layout";
 
-const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
 const ChatList = () => {
+  const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
   const [chats, setChats] = useState([]);
   const navigate = useNavigate();
   const currentUserId = parseInt(localStorage.getItem("user_id"));
 
+  // Fetch user's chat list and when a new message event is dispatched
   useEffect(() => {
     const fetchChats = async () => {
       try {
         const res = await axiosInstance.get("chat/");
-        console.log(" access from storage:", localStorage.getItem("access"));
         setChats(res.data);
       } catch (err) {
         console.error("Failed to load chats:", err);
@@ -23,10 +23,8 @@ const ChatList = () => {
   
     fetchChats();
   
-    const handleNewMessage = () => {
-      fetchChats();
-    };
-  
+    // Listener to refresh chat list when a new message is received
+    const handleNewMessage = () => { fetchChats();};
     window.addEventListener("new-message", handleNewMessage);
   
     return () => {
@@ -34,6 +32,7 @@ const ChatList = () => {
     };
   }, []);
   
+  // Sort chats by most recent activity last message or created_at
   const sortedChats = [...chats].sort((a, b) => {
     const aTime = a.last_message?.timestamp || a.created_at;
     const bTime = b.last_message?.timestamp || b.created_at;
@@ -49,43 +48,37 @@ const ChatList = () => {
         <h1 className="text-2xl font-bold mb-4 text-purple-700">Chat</h1>
         <div className="bg-white shadow rounded divide-y">
           {sortedChats.map((chat) => {
-            console.log("chat:", {
-                id: chat.id,
-                unread: chat.unread_count,
-                lastMessage: chat.last_message?.content,
-                timestamp: chat.last_message?.timestamp,
-              });
             const other = getOtherParticipant(chat.participants);
             const lastMessage = chat.last_message;
 
             return (
-              <div
-                key={chat.id}
-                className="p-4 flex items-start gap-4 hover:bg-gray-50 cursor-pointer relative"
-                onClick={() => navigate(`/chat/${chat.id}`)}
-              >
-                <img
-                  src={
-                    other?.profile_picture
-                      ? `${CLOUDINARY_BASE}/${other.profile_picture}`
-                      : "https://via.placeholder.com/40"
-                  }
-                  alt="profile"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
+                <div
+                    key={chat.id}
+                    className="p-4 flex items-start gap-4 hover:bg-gray-50 cursor-pointer relative"
+                    onClick={() => navigate(`/chat/${chat.id}`)}
+                >
+                    <img
+                    src={
+                        other?.profile_picture
+                        ? `${CLOUDINARY_BASE}/${other.profile_picture}`
+                        : "https://via.placeholder.com/40"
+                    }
+                    alt="profile"
+                    className="w-10 h-10 rounded-full object-cover"
+                    />
 
-                <div className="flex-grow">
-                  <p className="font-semibold text-purple-700">
-                    {other?.first_name} {other?.last_name}
-                  </p>
+                    <div className="flex-grow">
+                    <p className="font-semibold text-purple-700">
+                        {other?.first_name} {other?.last_name}
+                    </p>
 
-                  <p className="text-xs italic text-gray-400 mb-1">
-                    {chat.listing?.title || "Untitled Listing"}
-                  </p>
+                    <p className="text-xs italic text-gray-400 mb-1">
+                        {chat.listing?.title || "Untitled Listing"}
+                    </p>
 
-                  <p className="text-sm text-gray-500 truncate">
-                    {lastMessage?.content || "No messages yet"}
-                  </p>
+                    <p className="text-sm text-gray-500 truncate">
+                        {lastMessage?.content || "No messages yet"}
+                    </p>
                 </div>
 
                 <div className="flex flex-col items-end text-right text-xs text-gray-400 min-w-[60px]">

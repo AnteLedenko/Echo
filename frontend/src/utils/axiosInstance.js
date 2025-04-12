@@ -1,8 +1,11 @@
 import axios from "axios";
 
+// Create an Axios instance with the backend base URL from env
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
 });
+
+// Attach access token to every request if available
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -16,6 +19,7 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Handle expired access token by attempting to refresh it
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -38,10 +42,11 @@ axiosInstance.interceptors.response.use(
         const newAccess = res.data.access;
         localStorage.setItem("access", newAccess);
         originalRequest.headers.Authorization = `Bearer ${newAccess}`;
-
+        
+        // Retry the original request with new access token
         return axiosInstance(originalRequest);
       } catch (refreshErr) {
-        console.error("Token refresh failed:", refreshErr);
+        // If refresh fails, clear tokens and redirect to login
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
         window.location.href = "/auth/login";

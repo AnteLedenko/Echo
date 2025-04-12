@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 
 const SavedListings = () => {
-  const [savedListings, setSavedListings] = useState([]);
-  const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [savedListings, setSavedListings] = useState([]); // Listings user saved
+  const [error, setError] = useState(""); // Error handling
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
   const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
+  // Fetch saved listings on page load or page change
   useEffect(() => {
     const fetchSaved = async () => {
       try {
@@ -20,7 +21,6 @@ const SavedListings = () => {
         setSavedListings(res.data.results);
         setTotalPages(Math.ceil(res.data.count / 12));
       } catch (err) {
-        console.error("Failed to fetch saved listings", err);
         setError("You must be logged in to view saved listings.");
       }
     };
@@ -28,6 +28,7 @@ const SavedListings = () => {
     fetchSaved();
   }, [currentPage]);
 
+  // Remove a listing from saved
   const handleRemove = async (id) => {
     try {
       await axiosInstance.post(`listings/${id}/toggle-save/`);
@@ -45,9 +46,11 @@ const SavedListings = () => {
       <h2 className="text-2xl font-bold text-purple-700 text-center mb-6">
         Saved Listings
       </h2>
-
+ 
+      {/* Show error if needed */}
       {error && <p className="text-center text-red-500">{error}</p>}
 
+      {/* Fallback if there are no saved listings */}
       {!error && savedListings.length === 0 ? (
         <p className="text-center text-gray-500">No saved listings yet.</p>
       ) : (
@@ -69,7 +72,8 @@ const SavedListings = () => {
 
                 <h3 className="text-lg font-semibold text-purple-700">{listing.title}</h3>
                 <p className="text-purple-700 font-bold">€{listing.price}</p>
-
+ 
+                {/* View / Remove actions */}
                 <div className="flex flex-wrap gap-2 mt-3">
                     <Link
                         to={`/listings/${listing.id}`}

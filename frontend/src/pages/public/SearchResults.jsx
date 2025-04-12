@@ -17,6 +17,7 @@ const SearchResults = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("query");
 
+  // Fetch search results whenever query or page changes
   useEffect(() => {
     const fetchResults = async () => {
       if (!query) return;
@@ -25,13 +26,14 @@ const SearchResults = () => {
         const res = await axiosInstance.get("/search/", {params: { query, page: currentPage },});
         setResults(res.data.results);
         setTotalPages(Math.ceil(res.data.count / 12));
+
+        // Set initial toggle states
         const initialStatus = {};
         res.data.results.forEach((listing) => {
         initialStatus[listing.id] = listing.is_saved;
         });
         setToggleStatus(initialStatus);
       } catch (err) {
-        console.error("Search failed:", err);
         setError("Something went wrong while searching.");
       }
     };
@@ -39,6 +41,7 @@ const SearchResults = () => {
     fetchResults();
   }, [query, currentPage]);
 
+  // Toggle save status of a listing
   const handleToggleSave = async (id) => {
     try {
       await axiosInstance.post(`listings/${id}/toggle-save/`);
@@ -61,8 +64,10 @@ const SearchResults = () => {
         Search Results for: <span className="italic">{query}</span>
       </h2>
 
+      {/* Error state */}
       {error && <p className="text-center text-red-500">{error}</p>}
 
+      {/* No results fallback */}
       {!error && results.length === 0 ? (
         <p className="text-center text-gray-600">No results found.</p>
       ) : (
@@ -83,6 +88,8 @@ const SearchResults = () => {
 
                 <h3 className="text-lg text-purple-700 font-semibold">{listing.title}</h3>
                 <p className="text-purple-700 font-bold">€{listing.price}</p>
+
+                {/* Action buttons */}
                 <div className="flex flex-wrap gap-2 mt-3">
                     <Link
                         to={`/listings/${listing.id}`}

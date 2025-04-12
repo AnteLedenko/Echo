@@ -4,11 +4,12 @@ import axiosInstance from "../../utils/axiosInstance";
 import Layout from "../../components/Layout";
 
 const ResetPassword = () => {
-  const { uid, token } = useParams();
+  const { uid, token } = useParams(); // Extract uid and token from URL
   const [newPassword, setNewPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
+  // Handle form submission for resetting password
   const handleReset = async (e) => {
     e.preventDefault();
     setError("");
@@ -39,19 +40,9 @@ const ResetPassword = () => {
           </p>
         ) : (
           <form onSubmit={handleReset} className="space-y-4">
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="New password"
-              required
-              className="w-full px-4 py-2 border rounded"
-            />
+            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="New password" required className="w-full px-4 py-2 border rounded"/>
             {error && <p className="text-red-500 text-sm">{error}</p>}
-            <button
-              type="submit"
-              className="w-full bg-purple-700 text-white py-2 rounded hover:bg-purple-800 transition"
-            >
+            <button type="submit" className="w-full bg-purple-700 text-white py-2 rounded hover:bg-purple-800 transition">
               Reset Password
             </button>
           </form>

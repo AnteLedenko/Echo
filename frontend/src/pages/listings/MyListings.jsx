@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 
 const MyListings = () => {
-  const [listings, setListings] = useState([]);
-  const [error, setError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [listings, setListings] = useState([]); // Listings owned by the current user
+  const [error, setError] = useState(""); // Error message
+  const [currentPage, setCurrentPage] = useState(1); // For pagination
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
   const CLOUDINARY_BASE = import.meta.env.VITE_CLOUDINARY_BASE_URL;
 
+  // Fetch listings for the current user
   useEffect(() => {
     const fetchMyListings = async () => {
       try {
@@ -36,8 +37,10 @@ const MyListings = () => {
         My Listings
       </h2>
 
+      {/* Show error if API call fails */}
       {error && <p className="text-center text-red-500">{error}</p>}
-
+ 
+      {/* Empty listings fallback */}
       {!error && listings.length === 0 ? (
         <p className="text-center text-gray-500">You have no listings yet.</p>
       ) : (
@@ -61,7 +64,8 @@ const MyListings = () => {
                   {listing.title}
                 </h3>
                 <p className="font-bold text-purple-600">€{listing.price}</p>
-
+ 
+                {/* Listing actions */}
                 <div className="flex flex-wrap gap-2 mt-3">
                     <Link
                         to={`/listings/${listing.id}`}

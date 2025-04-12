@@ -7,10 +7,12 @@ const DeleteListing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // State to check ownership and track request status
   const [isOwner, setIsOwner] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Check if the logged-in user is the owner of the listing
   useEffect(() => {
     const checkOwnership = async () => {
       try {
@@ -31,6 +33,7 @@ const DeleteListing = () => {
     checkOwnership();
   }, [id]);
 
+  // Handle delete request and redirect
   const handleDelete = async () => {
     try {
       await axiosInstance.delete(`listings/${id}/delete/`);
@@ -41,6 +44,7 @@ const DeleteListing = () => {
     }
   };
 
+  // Show loading indicator while checking
   if (loading) {
     return (
       <Layout>
@@ -49,6 +53,7 @@ const DeleteListing = () => {
     );
   }
 
+   // Show error if user is not authorized
   if (!isOwner) {
     return (
       <Layout>
@@ -59,6 +64,7 @@ const DeleteListing = () => {
     );
   }
 
+  // Confirmation UI for deletion
   return (
     <Layout>
       <div className="max-w-md mx-auto bg-white shadow-md p-6 mt-10 rounded">
@@ -67,16 +73,10 @@ const DeleteListing = () => {
           Are you sure you want to delete this listing? This action cannot be undone.
         </p>
         <div className="flex justify-center gap-4">
-          <button
-            onClick={handleDelete}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
-          >
+          <button onClick={handleDelete} className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">
             Yes, Delete
           </button>
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
-          >
+          <button onClick={() => navigate(-1)} className="bg-purple-600 text-gray-700 px-4 py-2 rounded hover:bg-purple-700 transition">
             Cancel
           </button>
         </div>

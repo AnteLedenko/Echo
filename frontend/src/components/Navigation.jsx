@@ -3,16 +3,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 
 const Navigation = () => {
+  // React Router utilities
   const location = useLocation();
   const navigate = useNavigate();
+  // Refs to handle outside click detection
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [search, setSearch] = useState("");
-  const [unreadTotal, setUnreadTotal] = useState(0);
-
+  // State
+  const [isDropdownOpen, setDropdownOpen] = useState(false); // Tracks mobile menu state
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Tracks login status
+  const [search, setSearch] = useState(""); // Search input value
+  const [unreadTotal, setUnreadTotal] = useState(0);  // Total unread chat messages
+ 
+  // Runs when location changes, update auth state and unread badge
   useEffect(() => {
     const token = localStorage.getItem("access");
     setIsAuthenticated(!!token);
@@ -21,10 +25,10 @@ const Navigation = () => {
       fetchUnreadMessages();
     }
   
+    // Re-fetch unread count on custom events
     const handleNewMessage = () => {
       fetchUnreadMessages();
     };
-  
     const handleMessagesSeen = () => {
       fetchUnreadMessages();
     };
@@ -38,6 +42,7 @@ const Navigation = () => {
     };
   }, [location]);
   
+  // API call to get unread chat count
   const fetchUnreadMessages = async () => {
     try {
       const res = await axiosInstance.get("chat/");
@@ -48,12 +53,15 @@ const Navigation = () => {
     }
   };
 
+  // Toggles the mobile dropdown menu
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
+  // Closes dropdown when a menu item is clicked
   const handleLinkClick = () => {
     setDropdownOpen(false);
   };
 
+  // Detect clicks outside the menu and close if so
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
