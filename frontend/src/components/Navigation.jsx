@@ -154,7 +154,13 @@ const Navigation = () => {
             </>
           )}
 
-          <form onSubmit={handleSearch} className="block sm:hidden mt-4">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (search.trim()) {
+              navigate(`/search?query=${encodeURIComponent(search)}`);
+              setDropdownOpen(false);
+            }
+          }} className="block sm:hidden mt-4">
             <input
               type="text"
               value={search}
@@ -163,7 +169,7 @@ const Navigation = () => {
               className="w-60 px-3 py-2 rounded text-black"
             />
             <button
-              type="submit" onClick={handleLinkClick}
+              type="submit"
               className="w-30 ml-2 bg-white text-purple-700 py-2 rounded hover:bg-gray-100 transition"
             >
               Search
