@@ -84,15 +84,18 @@ const ChatRoom = () => {
         <div className="flex items-center gap-4 p-4 border-b bg-purple-100">
           {receiver && (
             <>
-              <img
-                src={
-                  receiver.profile_picture
-                    ? `${CLOUDINARY_BASE}/${receiver.profile_picture}`
-                    : "https://via.placeholder.com/40"
-                }
-                alt="avatar"
-                className="w-10 h-10 rounded-full object-cover"
-              />
+              {receiver.profile_picture ? (
+                <img
+                  src={`${CLOUDINARY_BASE}/${receiver.profile_picture}`}
+                  alt="avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                  {receiver.first_name?.[0] || "?"}
+                </div>
+              )}
+
               <Link
                 to={`/auth/profile/${receiver.id}`}
                 className="font-semibold text-purple-700 hover:underline"

@@ -64,8 +64,8 @@ const ChatList = () => {
                         className="w-10 h-10 rounded-full object-cover"
                     />
                     ) : (
-                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-500">
-                        No Image
+                    <div className="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                      {other?.first_name?.[0] || "?"}
                     </div>
                     )}
 
@@ -80,8 +80,8 @@ const ChatList = () => {
 
                     <p className="text-sm text-gray-500 truncate">
                      {lastMessage?.content
-                        ? lastMessage.content.length > 30
-                        ? lastMessage.content.slice(0, 30) + "..."
+                        ? lastMessage.content.length > 20
+                        ? lastMessage.content.slice(0, 20) + "..."
                         : lastMessage.content
                         : "No messages yet"}
                     </p>
