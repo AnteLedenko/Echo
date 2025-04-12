@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        logo: ['"Jolly Lodger"', 'cursive'],
+        logo: ['"Jolly Lodger"'],
         funnel: ['"Funnel Display"', 'sans-serif'],
         lora: ['"Lora"', 'serif'],
       },
