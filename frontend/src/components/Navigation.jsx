@@ -117,7 +117,7 @@ const Navigation = () => {
           </button>
         </form>
 
-        <h1 className="text-xl font-bold">Echo</h1>
+        <h1 className="text-xl font-bold" style={{ fontFamily: "'Jolly Lodger', cursive" }}>Echo</h1>
       </nav>
 
     
