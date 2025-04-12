@@ -57,15 +57,17 @@ const ChatList = () => {
                     className="p-4 flex items-start gap-4 hover:bg-gray-50 cursor-pointer relative"
                     onClick={() => navigate(`/chat/${chat.id}`)}
                 >
+                    {other?.profile_picture ? (
                     <img
-                    src={
-                        other?.profile_picture
-                        ? `${CLOUDINARY_BASE}/${other.profile_picture}`
-                        : "https://via.placeholder.com/40"
-                    }
-                    alt="profile"
-                    className="w-10 h-10 rounded-full object-cover"
+                        src={`${CLOUDINARY_BASE}/${other.profile_picture}`}
+                        alt="profile"
+                        className="w-10 h-10 rounded-full object-cover"
                     />
+                    ) : (
+                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-500">
+                        No Image
+                    </div>
+                    )}
 
                     <div className="flex-grow">
                     <p className="font-semibold text-purple-700">
@@ -77,7 +79,11 @@ const ChatList = () => {
                     </p>
 
                     <p className="text-sm text-gray-500 truncate">
-                        {lastMessage?.content || "No messages yet"}
+                     {lastMessage?.content
+                        ? lastMessage.content.length > 30
+                        ? lastMessage.content.slice(0, 30) + "..."
+                        : lastMessage.content
+                        : "No messages yet"}
                     </p>
                 </div>
 
