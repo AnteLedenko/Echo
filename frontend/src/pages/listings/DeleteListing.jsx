@@ -76,7 +76,7 @@ const DeleteListing = () => {
           <button onClick={handleDelete} className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">
             Yes, Delete
           </button>
-          <button onClick={() => navigate(-1)} className="bg-purple-600 text-gray-700 px-4 py-2 rounded hover:bg-purple-700 transition">
+          <button onClick={() => navigate(-1)} className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">
             Cancel
           </button>
         </div>
