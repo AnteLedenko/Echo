@@ -62,8 +62,8 @@ const Profile = () => {
               className="w-24 h-24 rounded-full object-cover mb-4 border"
             />
           ) : (
-            <div className="w-24 h-24 rounded-full bg-gray-300 mb-4 flex items-center justify-center text-gray-500">
-              No Image
+            <div className="w-24 h-24 rounded-full bg-purple-500 text-white mb-4 flex items-center justify-center text-2xl font-bold">
+              {user.first_name?.[0] || "?"}
             </div>
           )}
 
