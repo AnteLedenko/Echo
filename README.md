@@ -53,7 +53,7 @@ python manage.py runserver
 
 ### Navigation
 ![Navigation](./screenshots/navigation.PNG)
-Form that allows users to create new listings with multiple images, category selection, and location details.
+Users can navigate the app using the fixed top navigation bar with a dropdown menu. It adapts for both mobile and desktop.
 
 ### Home
 ![Home](./screenshots/home.PNG)
